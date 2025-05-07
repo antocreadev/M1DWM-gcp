@@ -1,3 +1,6 @@
+# M1DWM-gcp
+
+
 # Construire l'image
 docker build -t fastapi-app .
 
@@ -12,5 +15,3 @@ gcloud run deploy fastapi-api \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated
-# M1DWM-pubview
-# M1DWM-gcp
