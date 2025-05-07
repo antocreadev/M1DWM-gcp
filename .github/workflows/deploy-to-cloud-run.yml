@@ -59,12 +59,6 @@ jobs:
         service: ${{ env.SERVICE_NAME }}
         region: ${{ env.REGION }}
         image: gcr.io/${{ env.PROJECT_ID }}/fastapi-app:${{ github.sha }}
-        flags: --allow-unauthenticated --port=8080
+        flags: --allow-unauthenticated
         env_vars: |
           DATABASE_URL=${{ secrets.DATABASE_URL }}
-    
-    - name: Set up Monitoring
-      run: |
-        echo "Configuring monitoring for the deployed service..."
-        gcloud services enable monitoring.googleapis.com
-        gcloud services enable cloudmonitoring.googleapis.com

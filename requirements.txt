@@ -7,5 +7,3 @@ python-dotenv
 pytest
 httpx
 pytest-asyncio
-prometheus-client
-starlette-prometheus
