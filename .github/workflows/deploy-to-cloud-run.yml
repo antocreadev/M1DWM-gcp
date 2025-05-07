@@ -44,3 +44,5 @@ jobs:
         region: ${{ env.REGION }}
         image: gcr.io/${{ env.PROJECT_ID }}/fastapi-app:${{ github.sha }}
         flags: --allow-unauthenticated
+        env_vars: |
+          DATABASE_URL=${{ secrets.DATABASE_URL }}

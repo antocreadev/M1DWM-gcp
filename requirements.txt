@@ -1,2 +1,6 @@
 fastapi
+greenlet
 uvicorn[standard]
+sqlalchemy
+asyncpg
+python-dotenv
