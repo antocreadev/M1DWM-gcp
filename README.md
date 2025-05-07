@@ -9,7 +9,7 @@ docker run -d -p 8080:8080 fastapi-app
 
 # Build l'image 
 docker build --platform linux/amd64 -t gcr.io/eminent-bond-459020-q4/fastapi-app .
-
+ 
 # Push l'image
 docker push gcr.io/eminent-bond-459020-q4/fastapi-app
 
