@@ -19,3 +19,5 @@ gcloud run deploy fastapi-api \
   --platform managed \
   --region us-central1 \
   --allow-unauthenticated
+
+
