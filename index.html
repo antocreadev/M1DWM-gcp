@@ -27,22 +27,41 @@
             Appeler /
           </button>
           <button
-            onclick="fetchTestDb()"
-            class="bg-green-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-600 transition"
-          >
-            Tester la base de données
-          </button>
-          <button
             onclick="fetchAddUser()"
             class="bg-purple-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-purple-600 transition"
           >
             Ajouter un utilisateur
+          </button>
+          <button
+            onclick="fetchUsers()"
+            class="bg-green-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-600 transition"
+          >
+            Afficher les utilisateurs
           </button>
         </div>
 
         <!-- Affichage de la réponse -->
         <div class="text-center mt-6">
           <p id="response" class="text-xl font-medium text-gray-800"></p>
+        </div>
+
+        <!-- Tableau des utilisateurs -->
+        <div id="usersTableContainer" class="mt-8 hidden">
+          <h2 class="text-2xl font-semibold text-gray-700 text-center mb-4">Liste des utilisateurs</h2>
+          <div class="overflow-x-auto">
+            <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+              <thead class="bg-gray-200">
+                <tr>
+                  <th class="py-3 px-4 text-left">ID</th>
+                  <th class="py-3 px-4 text-left">Nom</th>
+                  <th class="py-3 px-4 text-left">Âge</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <!-- Les données des utilisateurs seront insérées ici -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -54,16 +73,7 @@
         );
         const data = await response.json();
         document.getElementById("response").innerText = data.message;
-      }
-
-      async function fetchTestDb() {
-        const response = await fetch(
-          "https://fastapi-api-938655321883.us-central1.run.app/test-db"
-        );
-        const data = await response.json();
-        document.getElementById(
-          "response"
-        ).innerText = `Temps DB: ${data.db_time}`;
+        document.getElementById("usersTableContainer").classList.add("hidden");
       }
 
       async function fetchAddUser() {
@@ -75,9 +85,69 @@
           );
           const data = await response.json();
           document.getElementById("response").innerText = data.message;
+          document.getElementById("usersTableContainer").classList.add("hidden");
+          // Actualiser la liste des utilisateurs après l'ajout
+          fetchUsers(false);
         } else {
           document.getElementById("response").innerText =
             "Nom et âge sont requis.";
+        }
+      }
+
+      async function fetchUsers(showResponse = true) {
+        try {
+          const response = await fetch(
+            "https://fastapi-api-938655321883.us-central1.run.app/get-users"
+          );
+          const data = await response.json();
+          
+          if (showResponse) {
+            document.getElementById("response").innerText = "Utilisateurs récupérés avec succès";
+          }
+          
+          // Afficher le tableau
+          document.getElementById("usersTableContainer").classList.remove("hidden");
+          
+          // Vider le corps du tableau
+          const tableBody = document.getElementById("usersTableBody");
+          tableBody.innerHTML = "";
+          
+          // Ajouter les utilisateurs au tableau
+          if (data.users && data.users.length > 0) {
+            data.users.forEach(user => {
+              const row = document.createElement("tr");
+              row.classList.add("border-b", "hover:bg-gray-50");
+              
+              const idCell = document.createElement("td");
+              idCell.classList.add("py-2", "px-4");
+              idCell.textContent = user.id;
+              
+              const nameCell = document.createElement("td");
+              nameCell.classList.add("py-2", "px-4");
+              nameCell.textContent = user.name;
+              
+              const ageCell = document.createElement("td");
+              ageCell.classList.add("py-2", "px-4");
+              ageCell.textContent = user.age;
+              
+              row.appendChild(idCell);
+              row.appendChild(nameCell);
+              row.appendChild(ageCell);
+              
+              tableBody.appendChild(row);
+            });
+          } else {
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+            cell.colSpan = 3;
+            cell.classList.add("py-4", "text-center", "text-gray-500");
+            cell.textContent = "Aucun utilisateur trouvé";
+            row.appendChild(cell);
+            tableBody.appendChild(row);
+          }
+        } catch (error) {
+          document.getElementById("response").innerText = "Erreur lors de la récupération des utilisateurs";
+          console.error("Erreur:", error);
         }
       }
     </script>
