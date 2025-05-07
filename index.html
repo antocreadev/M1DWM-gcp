@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Test FastAPI</title>
+  </head>
+  <body>
+    <h1>Bienvenue !</h1>
+    <button onclick="fetchRoot()">Appeler /</button>
+    <button onclick="fetchBonjour()">Appeler /bonjour</button>
+
+    <p id="response"></p>
+
+    <script>
+      async function fetchRoot() {
+        const response = await fetch("https://fastapi-api-938655321883.us-central1.run.app/");
+        const data = await response.json();
+        document.getElementById("response").innerText = data.message;
+      }
+
+      async function fetchBonjour() {
+        const response = await fetch("https://fastapi-api-938655321883.us-central1.run.app/bonjour");
+        const data = await response.json();
+        document.getElementById("response").innerText = data.message;
+      }
+    </script>
+  </body>
+</html>
