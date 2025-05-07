@@ -25,10 +25,8 @@ jobs:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
     
-    - name: Configure Docker for Google Artifact Registry
-      run: |
-        gcloud auth configure-docker us-central1-docker.pkg.dev,gcr.io
-        gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io
+    - name: Authenticate Docker to Google Cloud
+      run: gcloud auth configure-docker gcr.io
     
     - name: Build and push Docker image
       run: |
